@@ -33,16 +33,18 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 	var router = gin.Default()
 	var app = &AppController{db: DB}
 
-	router.GET("/", app.Index)
+	router.GET("/api", app.Index)
 	// All routing here
-	router.GET("/post", app.PostListing)
-	router.POST("/post", app.PostCreate)
-	router.DELETE("/post", app.PostDelete)
+	router.GET("/api/post", app.PostListing)
+	router.POST("/api/post", app.PostCreate)
+	router.DELETE("/api/post", app.PostDelete)
 
 	// Start HTTP server
 	var serverPort = ":" + os.Getenv("PORT")
 	if serverPort == ":" {
 		serverPort = ":8000"
 	}
+
+	http.Handle("/", http.FileServer(http.Dir("www")))
 	http.ListenAndServe(serverPort, router)
 }
