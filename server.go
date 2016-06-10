@@ -19,7 +19,10 @@ type Server struct {
 
 // Start server, all route come here
 func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string) {
-	var connString = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432", DBHOST, DBUSER, DBPWD, DBNAME)
+	var connString = os.Getenv("DATABASE_URL") 
+	if connString == "" {
+		fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432", DBHOST, DBUSER, DBPWD, DBNAME)
+	}
 	DB, _ := gorm.Open("postgres", connString)
 
 	if ok := DB.HasTable("posts"); ok {
