@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -39,5 +40,9 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 	router.POST("/delete", app.Delete)
 
 	// Start HTTP server
-	http.ListenAndServe(":8000", router)
+	var serverPort = ":" + os.Getenv("PORT")
+	if serverPort == ":" {
+		serverPort = ":8000"
+	}
+	http.ListenAndServe(serverPort, router)
 }
