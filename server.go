@@ -5,6 +5,7 @@ import (
 	"os"
 	"net/http"
 
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
@@ -33,6 +34,8 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 	var router = gin.Default()
 	var app = &AppController{db: DB}
 
+	router.Use(static.Serve("/", static.LocalFile("/www", false))) 
+
 	router.GET("/api", app.Index)
 	// All routing here
 	router.GET("/api/post", app.PostListing)
@@ -45,6 +48,5 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 		serverPort = ":8000"
 	}
 
-	http.Handle("/", http.FileServer(http.Dir("www")))
 	http.ListenAndServe(serverPort, router)
 }

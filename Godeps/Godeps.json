@@ -2,10 +2,11 @@
 	"ImportPath": "github.com/huytd/api-togo",
 	"GoVersion": "go1.6",
 	"GodepVersion": "v74",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
+		{
+			"ImportPath": "github.com/gin-gonic/contrib/static",
+			"Rev": "120df5cf76f14a246b04f0e35d5ee029b14d8dfb"
+		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin",
 			"Comment": "v1.0rc1-268-gf931d1e",
