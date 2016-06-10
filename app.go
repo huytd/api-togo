@@ -1,7 +1,6 @@
 package main
 
 import (
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -15,26 +14,30 @@ type AppController struct {
 	db *gorm.DB
 }
 
-// Home action
-func (a *AppController) Home(c *gin.Context) {
-	var allPosts []models.Post
-	a.db.Order("ID desc").Find(&allPosts)
-	c.HTML(http.StatusOK, "index.html", gin.H{
-		"data": allPosts,
-	})
+func (a *AppController) Index(c *gin.Context) {
+	c.JSON(200, gin.H{"status": true})
 }
 
-// Add new post action
-func (a *AppController) Add(c *gin.Context) {
+/////////////////////////////////////////////////////
+
+// List all posts
+func (a *AppController) PostListing(c *gin.Context) {
+	var allPosts []models.Post
+	a.db.Order("ID desc").Find(&allPosts)
+	c.JSON(200, gin.H{"posts": allPosts})
+}
+
+// Add new post
+func (a *AppController) PostCreate(c *gin.Context) {
 	var post = models.Post{Message: c.PostForm("Message")}
-	a.db.Create(&post)
-	c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
+	result := a.db.Create(&post)
+	c.JSON(200, gin.H{"result": result})
 }
 
 // Delete a post
-func (a *AppController) Delete(c *gin.Context) {
+func (a *AppController) PostDelete(c *gin.Context) {
 	id, _ := strconv.Atoi(c.PostForm("ID"))
 	var post = models.Post{ID: id}
-	a.db.Delete(&post)
-	c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
+	result := a.db.Delete(&post)
+	c.JSON(200, gin.H{"result": result})
 }

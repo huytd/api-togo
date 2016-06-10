@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -14,12 +14,11 @@ import (
 
 // Server class
 type Server struct {
-	
 }
 
 // Start server, all route come here
 func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string) {
-	var connString = os.Getenv("DATABASE_URL") 
+	var connString = os.Getenv("DATABASE_URL")
 	if connString == "" {
 		fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432", DBHOST, DBUSER, DBPWD, DBNAME)
 	}
@@ -34,13 +33,11 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 	var router = gin.Default()
 	var app = &AppController{db: DB}
 
-	router.Static("/css", "./public/css")
-	router.LoadHTMLGlob("public/*.html")
-
+	router.GET("/", app.Index)
 	// All routing here
-	router.GET("/", app.Home)
-	router.POST("/add", app.Add)
-	router.POST("/delete", app.Delete)
+	router.GET("/post", app.PostListing)
+	router.POST("/post", app.PostCreate)
+	router.DELETE("/post", app.PostDelete)
 
 	// Start HTTP server
 	var serverPort = ":" + os.Getenv("PORT")
