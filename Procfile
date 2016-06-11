@@ -1,1 +1,1 @@
-web: $PROJECT_NAME
+web: api-togo
