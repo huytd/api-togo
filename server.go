@@ -24,7 +24,7 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 	}
 	DB, _ := gorm.Open("postgres", connString)
 
-	if ok := DB.HasTable("posts"); ok {
+	if ok := DB.HasTable("maps"); ok {
 		fmt.Println("Checking DB.Map OK!")
 	} else {
 		DB.CreateTable(&models.Map{})
