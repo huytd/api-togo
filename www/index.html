@@ -1,1 +1,111 @@
-hello
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>apiToGo</title>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+        <!--<![endif]-->
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/theme.css">
+        <!--[if lt IE 9]>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+    <body id="api">
+        <div class="header">
+            <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+                <a class="pure-menu-heading" target="_blank" href="http://github.com/huytd/api-togo">apiToGo</a>
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item"><a href="#api" class="pure-menu-link">API</a></li>
+                    <li class="pure-menu-item"><a href="#docs" class="pure-menu-link">DOCS</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="splash-container">
+            <div class="splash">
+                <table class="pure-table pure-table-horizontal">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Data</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>GET</td>
+                            <td><code>/map</code></td>
+                            <td><i>-</i></td>
+                            <td>List all keys and values</td>
+                        </tr>
+                        <tr>
+                            <td>GET</td>
+                            <td><code>/map/:key</code></td>
+                            <td><i>-</i></td>
+                            <td>Get value of key</td>
+                        </tr>
+                        <tr>
+                            <td>POST</td>
+                            <td><code>/map</code></td>
+                            <td><code>{ Key: "key", Value: "string value" }</code></td>
+                            <td>Create a new key value pair</td>
+                        </tr>
+                        <tr>
+                            <td>PUT</td>
+                            <td><code>/map/:key</code></td>
+                            <td><code>{ Value: "new string value" }</code></td>
+                            <td>Update value of a key</td>
+                        </tr>
+                        <tr>
+                            <td>DELETE</td>
+                            <td><code>/map/:key</code></td>
+                            <td><i>-</i></td>
+                            <td>Delete a key</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    <a href="#docs" class="pure-button pure-button-primary">GETTING STARTED</a>
+                </p>
+            </div>
+        </div>
+        <div class="content-wrapper">
+            <div class="content" id="docs">
+                <h2>Introducion</h2>
+                <p><b>apiToGo</b> is an instant RESTful key-value API built with <a target="_blank" href="https://golang.org">Go</a> and <a target="_blank" href="https://www.postgresql.org/">PostgreSQL</a> database.</p>
+                <p>It was designed to easily deploy to <a target="_blank" href="https://www.heroku.com/">Heroku</a> or any server. But with Heroku, there is only just one click to deploy!</p>
+                <p>
+                    <img src="img/overview.png"/>
+                </p>
+                <p><b>apiToGo</b> both serve as a RESTful API and a static file server. You can access the API at address <a href="">http://&lt;your-app-name&gt;.herokuapp.com/api/</a>. The static file serves at the <b>www</b> folder. So you can just replace <b>www/index.html</b> (this page, if you don't know yet) with your front-end application.</p>
+                <p>This allow you to focus on the front-end and create any fully working web application with no backend code needed!</p>
+                <h2>API Usage</h2>
+                <p>At this moment, there is <i>only one</i> API endpoint available: <a href="/api/map">/api/map</a>. With this API, you can save any key-value data. Both of the <b>key</b> and the <b>value</b> must be saved as a <b>string</b>. With just this API, you have the basic ability to build any application.</p><p>If you want more features, feel free to create an Issue on <a href="https://github.com/huytd/api-togo">Github</a> or help me by contributing to this project, why not? :D</p>
+                <h3 class="api-header">GET /api/map</h3>
+                <p>A <b>GET</b> request to <a href="/api/map">/api/map</a> will return a list of all key-value pairs avaiable in the database. There are no security check needed at this time.</p>
+                <b>Request</b>
+                <pre>GET http://<your-app-name>.herokuapp.com/api/map</pre>
+                <b>Response</b>
+                <pre>{
+  "map": [
+    {
+      ID: 0,
+      Key: "key string",
+      Value: "value string"
+    },
+    ...
+  ]
+}</pre>
+            </div>
+        </div>
+    </body>
+</html>
