@@ -1,0 +1,23 @@
+{
+  "name": "API To Go",
+  "description": "Key Value REST API for anyone",
+  "keywords": [
+    "productivity",
+    "API",
+    "keyvalue"
+  ],
+  "repository": "https://github.com/huytd/api-togo",
+  "scripts": {
+
+  },
+  "env": {
+    "PROJECT_NAME": {
+      "description": "Re-enter your project name here",
+      "value": "",
+      "required": true
+    }
+  },
+  "addons": [
+    "postgres"
+  ]
+}
