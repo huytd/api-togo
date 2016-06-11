@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"net/http"
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
@@ -34,13 +33,16 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 	var router = gin.Default()
 	var app = &AppController{db: DB}
 
-	router.Use(static.Serve("/", static.LocalFile("/www", false))) 
+	router.Use(static.Serve("/", static.LocalFile("./www", true)))
 
-	router.GET("/api", app.Index)
-	// All routing here
-	router.GET("/api/post", app.PostListing)
-	router.POST("/api/post", app.PostCreate)
-	router.DELETE("/api/post", app.PostDelete)
+	api := router.Group("api")
+	{
+		api.GET("/", app.Index)
+		// All routing here
+		api.GET("/key", app.PostListing)
+		api.POST("/key", app.PostCreate)
+		api.DELETE("/key", app.PostDelete)
+	}
 
 	// Start HTTP server
 	var serverPort = ":" + os.Getenv("PORT")
@@ -48,5 +50,5 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 		serverPort = ":8000"
 	}
 
-	http.ListenAndServe(serverPort, router)
+	router.Run(serverPort)
 }
