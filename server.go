@@ -20,14 +20,14 @@ type Server struct {
 func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string) {
 	var connString = os.Getenv("DATABASE_URL")
 	if connString == "" {
-		fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432", DBHOST, DBUSER, DBPWD, DBNAME)
+		connString = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432", DBHOST, DBUSER, DBPWD, DBNAME)
 	}
 	DB, _ := gorm.Open("postgres", connString)
 
 	if ok := DB.HasTable("posts"); ok {
-		fmt.Println("Checking DB.Post OK!")
+		fmt.Println("Checking DB.Map OK!")
 	} else {
-		DB.CreateTable(&models.Post{})
+		DB.CreateTable(&models.Map{})
 	}
 
 	var router = gin.Default()
@@ -39,9 +39,9 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 	{
 		api.GET("/", app.Index)
 		// All routing here
-		api.GET("/key", app.PostListing)
-		api.POST("/key", app.PostCreate)
-		api.DELETE("/key", app.PostDelete)
+		api.GET("/map", app.MapListing)
+		api.POST("/map", app.MapCreate)
+		api.DELETE("/map", app.MapDelete)
 	}
 
 	// Start HTTP server
