@@ -10,13 +10,6 @@
   "scripts": {
 
   },
-  "env": {
-    "PROJECT_NAME": {
-      "description": "Re-enter your project name here",
-      "value": "",
-      "required": true
-    }
-  },
   "addons": [
     "heroku-postgresql"
   ]
