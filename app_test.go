@@ -18,20 +18,6 @@ func CreateTestServer() *httptest.Server {
 	return testServer
 }
 
-func TestRoot(t *testing.T) {
-	server := CreateTestServer()
-	defer server.Close()
-
-	res, err := http.Get(server.URL)
-	if err != nil {
-		t.Error(err)
-	}
-
-	if res.StatusCode != 200 {
-		t.Error("GET request to /api/ Failed")
-	}
-}
-
 func TestGETEndpoints(t *testing.T) {
 	var endpoints = []struct {
 		in  string // input is an endpoint
