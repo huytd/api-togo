@@ -4,8 +4,8 @@ import "time"
 
 // Map is the model of key-value data
 type Map struct {
-	ID        int
-	Key       string `sql:"size:255"`
-	Value     string
-	CreatedAt time.Time
+	ID        int       `json:"id"`
+	Key       string    `json:"key"`
+	Value     string    `json:"value"`
+	CreatedAt time.Time `json:"created"`
 }

@@ -16,13 +16,9 @@ import (
 type Server struct {
 }
 
-// Start server, all route come here
-func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string) {
-	var connString = os.Getenv("DATABASE_URL")
-	if connString == "" {
-		connString = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432", DBHOST, DBUSER, DBPWD, DBNAME)
-	}
-	DB, _ := gorm.Open("postgres", connString)
+// InitDatabase create a new database
+func (s *Server) InitDatabase(con string) *gorm.DB {
+	DB, _ := gorm.Open("postgres", con)
 
 	if ok := DB.HasTable("maps"); ok {
 		fmt.Println("Checking DB.Map OK!")
@@ -30,8 +26,12 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 		DB.CreateTable(&models.Map{})
 	}
 
-	var router = gin.Default()
-	var app = &AppController{db: DB}
+	return DB
+}
+
+// InitEngine create a new routing engine
+func (s *Server) InitEngine(app *AppController) *gin.Engine {
+	router := gin.Default()
 
 	router.Use(static.Serve("/", static.LocalFile("./www", true)))
 
@@ -40,15 +40,29 @@ func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string
 		api.GET("/", app.Index)
 		// All routing here
 		api.GET("/map", app.MapListing)
+		api.GET("/map/:key", app.MapFind)
 		api.POST("/map", app.MapCreate)
-		api.DELETE("/map", app.MapDelete)
+		api.PUT("/map/:key", app.MapCreate)
+		api.DELETE("/map/:key", app.MapDelete)
 	}
 
-	// Start HTTP server
-	var serverPort = ":" + os.Getenv("PORT")
+	return router
+}
+
+// Start server, all route come here
+func (s *Server) Start(DBHOST string, DBUSER string, DBPWD string, DBNAME string) {
+	connString := os.Getenv("DATABASE_URL")
+	if connString == "" {
+		connString = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432", DBHOST, DBUSER, DBPWD, DBNAME)
+	}
+
+	serverPort := ":" + os.Getenv("PORT")
 	if serverPort == ":" {
 		serverPort = ":8000"
 	}
 
+	db := s.InitDatabase(connString)
+	app := &AppController{DB: db}
+	router := s.InitEngine(app)
 	router.Run(serverPort)
 }

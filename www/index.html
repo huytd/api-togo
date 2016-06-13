@@ -17,6 +17,7 @@
         <!--[if lt IE 9]>
             <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
         <![endif]-->
+        <script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
     </head>
     <body id="api">
         <div class="header">
@@ -93,7 +94,7 @@
                 <h3 class="api-header">GET /api/map</h3>
                 <p>A <b>GET</b> request to <a href="/api/map">/api/map</a> will return a list of all key-value pairs avaiable in the database. There are no security check needed at this time.</p>
                 <b>Request</b>
-                <pre>GET http://<your-app-name>.herokuapp.com/api/map</pre>
+                <pre>GET http://&lt;your-app-name&gt;.herokuapp.com/api/map</pre>
                 <b>Response</b>
                 <pre>{
   "map": [
@@ -104,6 +105,39 @@
     },
     ...
   ]
+}</pre>
+                <h3 class="api-header">GET /api/map/:key</h3>
+                <p>A <b>GET</b> request to <a href="/api/map/:key">/api/map/:key</a> will return the JSON object which matched <b>:key</b>. Or <b>null</b> if not found. It's recommended to use a <b>key</b> with no spaces or special characters, or it will get encrypted by the browser when sending request.</p>
+                <b>Request</b>
+                <pre>GET http://&lt;your-app-name&gt;.herokuapp.com/api/map/secret_key</pre>
+                <b>Response</b>
+                <pre>{
+  "item": {
+    ID: 0,
+    Key: "key string",
+    Value: "value string"
+  }
+}</pre>
+                <h3 class="api-header">POST /api/map</h3>
+                <p>A <b>POST</b> request to <a href="/api/map">/api/map</a> will create a new object to the database. Both of the <b>key</b> and <b>value</b> must be send as a <b>string</b>. If you are saving an object, make sure you converted it to a string by using <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify">JSON.stringify()</a> before you make a request.</p>
+                <b>Request</b>
+                <pre>POST http://&lt;your-app-name&gt;.herokuapp.com/api/map/secret_key
+{
+  Key: "key string",
+  Value: "{ [stringified object] }"
+}</pre>
+                <b>Response</b>
+                <pre>{
+  "result": {
+    "Value": {
+      "ID": [ID],
+      "Key": "[key string]",
+      "Value": "[value string]",
+      "CreatedAt": "[Date Created]"
+    },
+    "Error": null,
+    "RowsAffected": 1
+  }
 }</pre>
             </div>
         </div>
